@@ -19,7 +19,7 @@
 
 #define HEADER "/* ************************************************************************** */%c/*                                                                            */%c/*                                                        :::      ::::::::   */%c/*   sully.c                                            :+:      :+:    :+:   */%c/*                                                    +:+ +:+         +:+     */%c/*   By: wescande <wescande@student.42.fr>          +#+  +:+       +#+        */%c/*                                                +#+#+#+#+#+   +#+           */%c/*   Created: 2017/07/14 15:54:38 by wescande          #+#    #+#             */%c/*   Updated: 2017/07/14 16:49:22 by wescande         ###   ########.fr       */%c/*                                                                            */%c/* ************************************************************************** */%c"
 #define HEAD "%c#define _GNU_SOURCE%c%c#include <stdio.h>%c#include <fcntl.h>%c#include <unistd.h>%c#include <stdlib.h>%c%c#define HEADER %c%s%c%c#define HEAD %c%s%c%c#define BODY %c%s%c%c%c"
-#define BODY "int main(void)%c{%c	char *name;%c	char *compilation;%c	char *execution;%c	int i;%c	int fd;%c%c	i = %d;%c	if (i < 0)%c		return (0);%c	if (!asprintf(&name, %cSully_%%d.c%c, i))%c		return (1);%c	if (!asprintf(&compilation, %cgcc -Wall -Wextra -Werror %%s -o Sully_%%d%c, name, i))%c		return (1);%c	if (!asprintf(&execution, %c./Sully_%%d%c, i))%c		return (1);%c	if ((fd = open(name, O_CREAT | O_TRUNC | O_WRONLY, 0644)) == -1)%c		return (1);%c		--i;%cfree(name);%c	dprintf(fd, HEADER, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);%c	dprintf(fd, HEAD, 10, 10, 10, 10, 10, 10, 10, 10, 34, HEADER, 34, 10, 34, HEAD, 34, 10, 34, BODY, 34, 10, 10);%c	dprintf(fd, BODY, 10, 10, 10, 10, 10, 10, 10, 10, i, 10, 10, 10, 34, 34, 10, 10, 34, 34, 10, 10, 34, 34, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);%c	close(fd);%c	system(compilation);%c	free(compilation);%c	system(execution);%c	free(execution);%c	return (0);%c}%c"
+#define BODY "int main(void)%c{%c	char *name;%c	char *compilation;%c	char *execution;%c	int i;%c	int fd;%c%c	i = %d;%c	if (i < 0)%c		return (0);%c	if (!asprintf(&name, %cSully_%%d.c%c, i))%c		return (1);%c	if (!asprintf(&compilation, %cgcc -Wall -Wextra -Werror %%s -o Sully_%%d%c, name, i))%c		return (1);%c	if (!asprintf(&execution, %c./Sully_%%d%c, i))%c		return (1);%c	if ((fd = open(name, O_CREAT | O_TRUNC | O_WRONLY, 0644)) == -1)%c		return (1);%c	--i;%c	free(name);%c	dprintf(fd, HEADER, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);%c	dprintf(fd, HEAD, 10, 10, 10, 10, 10, 10, 10, 10, 34, HEADER, 34, 10, 34, HEAD, 34, 10, 34, BODY, 34, 10, 10);%c	dprintf(fd, BODY, 10, 10, 10, 10, 10, 10, 10, 10, i, 10, 10, 10, 34, 34, 10, 10, 34, 34, 10, 10, 34, 34, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);%c	close(fd);%c	if (system(compilation))%c		return (1);%c	free(compilation);%c	if (system(execution))%c		return (1);%c	free(execution);%c	return (0);%c}%c"
 
 int main(void)
 {
@@ -44,11 +44,13 @@ int main(void)
 	free(name);
 	dprintf(fd, HEADER, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
 	dprintf(fd, HEAD, 10, 10, 10, 10, 10, 10, 10, 10, 34, HEADER, 34, 10, 34, HEAD, 34, 10, 34, BODY, 34, 10, 10);
-	dprintf(fd, BODY, 10, 10, 10, 10, 10, 10, 10, 10, i, 10, 10, 10, 34, 34, 10, 10, 34, 34, 10, 10, 34, 34, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
+	dprintf(fd, BODY, 10, 10, 10, 10, 10, 10, 10, 10, i, 10, 10, 10, 34, 34, 10, 10, 34, 34, 10, 10, 34, 34, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
 	close(fd);
-	system(compilation);
+	if (system(compilation))
+		return (1);
 	free(compilation);
-	system(execution);
+	if (system(execution))
+		return (1);
 	free(execution);
 	return (0);
 }
