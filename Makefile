@@ -10,7 +10,7 @@
 #*                                                                            *#
 #* ************************************************************************** *#
 
-NAME		=	DrQuine
+# NAME		=	DrQuine
 
 BUILDS		=\
 Colleen\
@@ -39,9 +39,9 @@ SHELL := /bin/bash
 all :
 	@$(MAKE) -j $(BUILDS)
 
-$(NAME) :		$(BUILDS) $(OBJS) Makefile | $(OBJ_DIR)
-	@touch $(NAME)
-	@printf "\r\033[38;5;117m✓ MAKE $(NAME)\033[0m\033[K\n"
+# $(NAME) :		$(BUILDS) $(OBJS) Makefile | $(OBJ_DIR)
+# 	@touch $(NAME)
+# 	@printf "\r\033[38;5;117m✓ MAKE $(NAME)\033[0m\033[K\n"
 
 $(OBJ_DIR) :
 	@mkdir -p $(OBJ_DIR)
@@ -68,11 +68,8 @@ clean :
 	fi;
 
 fclean :		clean
-	@if [ -e $(NAME) ]; \
-	then \
-		rm -rf $(NAME); \
-		printf "\r\033[38;5;196m✗ fclean $(NAME).\033[0m\033[K\n"; \
-	fi;
+	@rm -rf $(BUILDS); 
+	@printf "\r\033[38;5;196m✗ fclean $(BUILDS).\033[0m\033[K\n"; 
 
 re :			fclean all
 
